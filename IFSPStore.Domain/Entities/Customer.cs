@@ -2,26 +2,27 @@
 
 namespace IFSPStore.Domain.Entities
 {
-    internal class Customer : BaseEntity<int>
+    public class Customer : BaseEntity<int>
     {
 
-        public Customer(int id, string name, string adress, string ssnumber, string neighborhood, string city) : base(id) {
+        public Customer() : base(0)
+        {
+        }
+
+        public Customer(int id, string name, string address, string document, string district, City city) : base(id) {
             Name = name;
-            Adress = adress;
-            SSNumber = ssnumber;
-            Neighborhood = neighborhood;
+            Address = address;
+            Document = document;
+            District = district;
             City = city;
-            cityId = costumerCity.Id;
 
         }
 
         public string Name { get; set; }
-        public string Adress { get; set; }
-        public string SSNumber { get; set; }
-        public string Neighborhood { get; set; }
-        public string City { get; set; }
-        public City costumerCity { get; set; }
-        public int cityId { get; set; }
-
+        public string Address { get; set; }
+        public string Document { get; set; }
+        public string District { get; set; }
+        public City City { get; set; }
+  
     }
 }

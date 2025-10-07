@@ -2,15 +2,19 @@
 
 namespace IFSPStore.Domain.Entities
 {
-    internal class City : BaseEntity<int> {
+    public class City : BaseEntity<int> {
 
-        public City(int id, string nome, string estado): base(id) {
-            Nome = nome;
-            Estado = estado;
+        public City() : base(0)
+        {
         }
 
-        public string Nome { get; set; }
-        public string Estado { get; set; }
+        public City(int id, string name, string state): base(id) {
+            Name = name;
+            State = state;
+        }
+
+        public string Name { get; set; }
+        public string State { get; set; }
 
     }   
 }
