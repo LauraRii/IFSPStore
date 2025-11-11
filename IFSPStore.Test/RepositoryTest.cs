@@ -2,6 +2,7 @@
 using System.Text.Json;
 using IFSPStore.Domain.Entities;
 using IFSPStore.Repository.Context;
+using IFSPStore.Repository.Repository;
 
 namespace IFSPStore.Test
 {
@@ -10,7 +11,7 @@ namespace IFSPStore.Test
     {
         [TestMethod]
         public void TestCategory()
-        {
+        {/*
             using (var context = new IFSPStoreContext())
             {
                 Console.WriteLine("Connected!");
@@ -33,6 +34,40 @@ namespace IFSPStore.Test
                 }
                 Console.WriteLine("List done!");
             }
+        */
+        }
+
+        [TestMethod]
+        public void Product()
+        {
+            var context = new IFSPStoreContext();
+            var _categoryRepository = new BaseRepository<Category>(context);
+            var _productRepository = new BaseRepository<Product>(context);
+
+            var category1 = new Category();
+            category1.Name = "Enlatados";
+            _categoryRepository.Insert(category1);
+            var category2 = new Category();
+            category2.Name = "Saudáveis";
+            _categoryRepository.Insert(category2);
+
+            var prod1 = new Product();
+            prod1.Name = "Sardinha";
+            prod1.Price = 10.55M;
+            prod1.Quantity = 55;
+            prod1.SalesUnit = "Lata";
+            prod1.PurchaseDate = DateTime.Now;
+            prod1.Category = category1;
+            _productRepository.Insert(prod1);
+
+            var prod2 = new Product();
+            prod2.Name = "Whey Protein";
+            prod2.Price = 155.55M;
+            prod2.Quantity = 61;
+            prod2.SalesUnit = "Pote";
+            prod2.PurchaseDate = DateTime.Now;
+            prod2.Category = category2;
+            _productRepository.Insert(prod2);
         }
     }
 }
