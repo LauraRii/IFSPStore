@@ -2,8 +2,6 @@
 using FluentValidation;
 using IFSPStore.Domain.Base;
 using Microsoft.IdentityModel.Tokens.Experimental;
-using System.Runtime.CompilerServices;
-
 
 namespace IFSPStore.Service.Service
 {
@@ -11,66 +9,64 @@ namespace IFSPStore.Service.Service
     {
         private readonly IBaseRepository<TEntity> _baseRepository;
         private readonly IMapper _mapper;
-        public TOutputModel Add<TInputModel, TOutputModel, TValidator>(TInputModel inputmodel)
-            where TInputModel : class
-            where TOutputModel : class
-            where TValidator : FluentValidation.AbstractValidator<TEntity>
-        {
-            var entity = _mapper.Map<TEntity>(inputmodel);
-            Validate(entity, Activator.CreateInstance<TValidator>());
-            _baseRepository.Insert(entity);
-            var outputmodel = _mapper.Map<TOutputModel>(entity);
-            return outputmodel;
-        }
 
         public BaseService(IBaseRepository<TEntity> baseRepository, IMapper mapper)
         {
             _baseRepository = baseRepository;
             _mapper = mapper;
         }
+        public TOutputModel Add<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+            where TInputModel : class
+            where TOutputModel : class
+            where TValidator : AbstractValidator<TEntity>
+        {
+            var entity = _mapper.Map<TEntity>(inputModel);
+            Validate(entity, Activator.CreateInstance<TValidator>());
+            _baseRepository.Insert(entity);
+            var outputModel = _mapper.Map<TOutputModel>(entity);
+            return outputModel;
+        }
 
         private void Validate(TEntity obj, AbstractValidator<TEntity> validator)
         {
             if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj), "Objeto nulo!");
-            }
-                validator.ValidateAndThrow(obj);
-            }   
+                throw new Exception("Objeto nulo");
+            validator.ValidateAndThrow(obj);
+        }
 
-        public void AttachObeject(object obj)
+        public void AttachObject(object obj)
         {
-            _baseRepository.AttachObjetc(obj);
+            _baseRepository.AttachObject(obj);
         }
 
         public void Delete(int id)
         {
-            _baseRepository.CleanChangeTracker();
+            _baseRepository.ClearChangeTracker();
             _baseRepository.Delete(id);
-
         }
 
-        public IEnumerable<TOutputModel> Get<TOutputModel>(IList<string> oncludes = null) where TOutputModel : class
+        public IEnumerable<TOutputModel> Get<TOutputModel>(IList<string>? includes = null) where TOutputModel : class
         {
-           var entities = _baseRepository.Select(oncludes);
-            return entities.Select(s => _mapper.Map<TOutputModel>(s)).ToList();
+            var entities = _baseRepository.Select(includes);
+            return entities.Select(s => _mapper.Map<TOutputModel>(s));
         }
 
-        public TOutputModel GetById<TOutputModel>(int id, IList<string> includes = null) where TOutputModel : class
+        public TOutputModel GetById<TOutputModel>(int id, IList<string>? includes = null) where TOutputModel : class
         {
-            var entities = _baseRepository.Select(id, includes);
-            return _mapper.Map<TOutputModel>(entities);
+            var entity = _baseRepository.Select(id, includes);
+            return _mapper.Map<TOutputModel>(entity);
         }
 
-        public TOutputModel Update<TInputModel, TOutputModel, TValidator>(TInputModel inputmodel)
+        public TOutputModel Update<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TInputModel : class
             where TOutputModel : class
-            where TValidator : FluentValidation.AbstractValidator<TEntity>
+            where TValidator : AbstractValidator<TEntity>
         {
-            var entity = _mapper.Map<TEntity>(inputmodel);
+            var entity = _mapper.Map<TEntity>(inputModel);
             Validate(entity, Activator.CreateInstance<TValidator>());
             _baseRepository.Update(entity);
-            return _mapper.Map<TOutputModel>(entity);
+            var outputModel = _mapper.Map<TOutputModel>(entity);
+            return outputModel;
         }
     }
 }

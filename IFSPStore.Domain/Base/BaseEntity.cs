@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace IFSPStore.Domain.Base
 {
@@ -13,20 +9,6 @@ namespace IFSPStore.Domain.Base
         {
             Id = id;
         }
-
-        public TId Id { get; set; }
-
-        public string Nome;
-
-        public string GetNome()
-        {
-            return Nome;
-        }
-
-        public void SetNome(string nome)
-        {
-            Nome = nome;
-        }
-
+        public TId Id { get; private set; }
     }
 }

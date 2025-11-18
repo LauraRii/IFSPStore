@@ -1,0 +1,1 @@
+﻿Server=localhost;Port=3307;Database=IFSPStoreDB;Uid=root;Pwd=Tanodocino0811*
